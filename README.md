@@ -2,9 +2,25 @@
 
 # TO DO - Readme.md and Security.md
 
+Prerequisites:
+- Docker Desktop (WSL2 - Ubuntu 24.04 for Windows 11 !-RECOMMENDED-! )
+- Git
+
+# How to start the DevOps lab
+
+Run the lab `docker-compose up -d`
+
+This command will:
+- Create all defined Docker networks
+- Assign static IPs to each container
+- Launch services behind an HTTPS reverse proxy (NGINX)
+- Restrict sensitive services to VPN access only
+
+Stop the lab `docker-compose down` or with volume cleanup: `docker-compose down -v`
+
+To see logs of a services `docker-compose logs -f <service-name>`
 
 # Container Network Mapping
-
 
 | Network Name     | Subnet       | Description                        | Connected Services                                                                                 |
 | ---------------- | ------------ | ---------------------------------- | ---------------------------------------------------------------------------------------------------|
