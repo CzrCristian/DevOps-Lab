@@ -42,7 +42,18 @@ services:
   ### Email Server (MailDev for testing)
 
   ### Management UI
-
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-docker-extension:2.27.6
+    networks:
+      mgmt_net:
+        ipv4_address: 10.5.0.210
+      frontend_net:
+        ipv4_address: 10.0.0.210
+    expose:
+      - "9443"
+  #  volumes:
+  #    - /var/run/docker.sock:/var/run/docker.sock
   ### Jump Server (SSH enabled Ubuntu)
 
   ### CI/CD Tools
@@ -51,11 +62,23 @@ services:
 
   ### Web Servers / Frontend (HTTPS reverse proxy to all internal apps)
 
+  webserver:
+    container_name: nginx
+    image: nginx
+    networks:
+      backend_net:
+        ipv4_address: 10.1.0.10
+    ports:
+      - 80:8080
+      - 443:8443
+    command: tail -f /dev/null
+
   ### Databases (Private)
 
   ### Dev Images
 
   ubuntu:
+    container_name: dev1
     image: ubuntu
     networks:
       backend_net:
@@ -63,6 +86,7 @@ services:
     command: tail -f /dev/null
 
   alpine:
+    container_name: dev2
     image: alpine
     networks:
       backend_net:
