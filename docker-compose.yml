@@ -1,0 +1,77 @@
+version: '3.9'
+
+networks:
+  frontend_net:
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24
+  backend_net:
+    ipam:
+      config:
+        - subnet: 10.1.0.0/24
+  db_net:
+    ipam:
+      config:
+        - subnet: 10.2.0.0/24
+  cicd_net:
+    ipam:
+      config:
+        - subnet: 10.3.0.0/24
+  monitoring_net:
+    ipam:
+      config:
+        - subnet: 10.4.0.0/24
+  mgmt_net:
+    ipam:
+      config:
+        - subnet: 10.5.0.0/24
+  mail_net:
+    ipam:
+      config:
+        - subnet: 10.6.0.0/24
+  openvpn_net:
+    ipam:
+      config:
+        - subnet: 10.10.0.0/24
+
+services:
+  ### OpenVPN Server
+
+  ### DNS Server (CoreDNS)
+
+  ### Email Server (MailDev for testing)
+
+  ### Management UI
+
+  ### Jump Server (SSH enabled Ubuntu)
+
+  ### CI/CD Tools
+
+  ### Monitoring
+
+  ### Web Servers / Frontend (HTTPS reverse proxy to all internal apps)
+
+  ### Databases (Private)
+
+  ### Dev Images
+
+  ubuntu:
+    image: ubuntu
+    networks:
+      backend_net:
+        ipv4_address: 10.1.0.100
+    command: tail -f /dev/null
+
+  alpine:
+    image: alpine
+    networks:
+      backend_net:
+        ipv4_address: 10.1.0.101
+    command: tail -f /dev/null
+
+
+
+
+
+
+
