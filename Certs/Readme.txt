@@ -4,7 +4,7 @@ This folder contains all SSL/TLS certificates used for securing internal contain
 (e.g., Nginx ↔ Tomcat) and for exposing services over HTTPS to the public network.
 
 Structure:
-- nginx/        - Contains `nginx.crt`, `nginx.key` (wildcard certificate for *.cysaas.local)
+- nginx/        - Contains `nginx.crt`, `nginx.key` (wildcard certificate for *.host.local)
 - tomcat/       - Contains `keystore.p12` (generated from certificate for Tomcat HTTPS)
 - gen-certs.sh  - Script to generate wildcard certificates using OpenSSL
 
