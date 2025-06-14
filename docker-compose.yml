@@ -1,3 +1,5 @@
+# DevOps-Lab V1.5
+
 version: '3.9'
 
 networks:
@@ -62,6 +64,7 @@ services:
 
   ### Web Servers / Frontend (HTTPS reverse proxy to all internal apps)
 
+  ## Nginx container
   webserver:
     container_name: nginx
     image: nginx
@@ -72,8 +75,39 @@ services:
       - 80:8080
       - 443:8443
     command: tail -f /dev/null
+  
+  ## Tomcat containers
+  tomcat-1:
+    container_name: tomcat-1
+    image: tomcat
+    networks:
+      backend_net:
+        ipv4_address: 10.1.0.21
+    command: tail -f /dev/null
+
+  tomcat-2:
+    container_name: tomcat-2
+    image: tomcat
+    networks:
+      backend_net:
+        ipv4_address: 10.1.0.22
+    command: tail -f /dev/null
 
   ### Databases (Private)
+
+  postgres:
+    container_name: postgresql-main
+    image: main-db
+    networks:
+      backend_net:
+        ipv4_address: 10.2.0.10
+
+  postgres-drc:
+    container_name: postgresql-drc
+    image: drc-db
+    networks:
+      backend_net:
+        ipv4_address: 10.2.0.100
 
   ### Dev Images
 
