@@ -1,4 +1,5 @@
-# DevOps-Lab V1.5
+# DevOps-Lab V1.6.1
+# Made by Wras - Cristian C.
 
 version: '3.9'
 
@@ -37,16 +38,18 @@ networks:
         - subnet: 10.10.0.0/24
 
 services:
-  ### OpenVPN Server
+  # OpenVPN Server
 
-  ### DNS Server (CoreDNS)
+  # DNS Server (CoreDNS)
 
-  ### Email Server (MailDev for testing)
+  # Email Server (MailDev for testing)
 
-  ### Management UI
+  # Management UI
+    # Portainer
   portainer:
     container_name: portainer
     image: portainer/portainer-docker-extension:2.27.6
+    tty: true
     networks:
       mgmt_net:
         ipv4_address: 10.5.0.210
@@ -56,64 +59,141 @@ services:
       - "9443"
   #  volumes:
   #    - /var/run/docker.sock:/var/run/docker.sock
-  ### Jump Server (SSH enabled Ubuntu)
+  # Jump Server (SSH enabled Ubuntu)
 
-  ### CI/CD Tools
+  # CI/CD Tools
+    
+    # Jenkins
+  jenkins:
+    container_name: jenkins
+    image: jenkins/jenkins
+    tty: true
+    networks:
+      cicd_net:
+        ipv4_address: 10.3.0.10
+  
+  # Monitoring
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    tty: true
+    networks:
+      monitoring_net:
+        ipv4_address: 10.4.0.10
+      backend_net:
+        ipv4_address: 10.1.0.200
+      frontend_net:
+        ipv4_address: 10.0.0.200
+    ports: 
+      - 3000:3005
+    #command: tail -f /dev/null
 
-  ### Monitoring
+  prometheus:
+    image: ubuntu
+    tty: true
+    networks:
+      monitoring_net:
+        ipv4_address: 10.4.0.11
+      backend_net:
+        ipv4_address: 10.1.0.201
+      frontend_net:
+        ipv4_address: 10.0.0.201
+    expose:
+      - "9090"
+    command: tail -f /dev/null
 
-  ### Web Servers / Frontend (HTTPS reverse proxy to all internal apps)
+  # Web Servers / Frontend (HTTPS reverse proxy to all internal apps)
 
-  ## Nginx container
+    # Nginx container
   webserver:
     container_name: nginx
     image: nginx
+    tty: true
+    depends_on:
+      - tomcat-1-dev
+      - tomcat-1-test
+      - tomcat-1-prod
     networks:
-      backend_net:
-        ipv4_address: 10.1.0.10
+      frontend_net:
+        ipv4_address: 10.0.0.10
     ports:
       - 80:8080
       - 443:8443
     command: tail -f /dev/null
   
-  ## Tomcat containers
-  tomcat-1:
-    container_name: tomcat-1
+    # Tomcat containers
+      # Tomcat dev enviroment
+  tomcat-1-dev:
+    container_name: tomcat-1-dev
     image: tomcat
+    tty: true
+    depends_on:
+      - postgres-dev
+    networks:
+      backend_net:
+        ipv4_address: 10.1.0.20
+    command: tail -f /dev/null
+
+      # Tomcat testing enviroment
+  tomcat-1-test:
+    container_name: tomcat-1-test
+    image: tomcat
+    tty: true
+    depends_on:
+      - postgres-test
     networks:
       backend_net:
         ipv4_address: 10.1.0.21
     command: tail -f /dev/null
 
-  tomcat-2:
-    container_name: tomcat-2
+      # Tomcat production enviroment
+  tomcat-1-prod:
+    container_name: tomcat-1-prod
     image: tomcat
+    tty: true
+    depends_on:
+      - postgres-prod
     networks:
       backend_net:
         ipv4_address: 10.1.0.22
     command: tail -f /dev/null
 
-  ### Databases (Private)
+    # Databases (Private)
 
-  postgres:
+      # DB for Prod env
+  postgres-prod:
     container_name: postgresql-main
-    image: main-db
+    image: postgres
+    tty: true
     networks:
-      backend_net:
+      db_net:
         ipv4_address: 10.2.0.10
+    command: tail -f /dev/null
 
-  postgres-drc:
-    container_name: postgresql-drc
-    image: drc-db
+      # DB for test env
+  postgres-test:
+    container_name: postgresql-test
+    image: postgres
+    tty: true
     networks:
-      backend_net:
+      db_net:
         ipv4_address: 10.2.0.100
+    command: tail -f /dev/null
 
-  ### Dev Images
+  postgres-dev:
+    container_name: postgresql-dev
+    image: postgres
+    tty: true
+    networks:
+      db_net:
+        ipv4_address: 10.2.0.111
+    command: tail -f /dev/null
 
+  # Dev Images
   ubuntu:
     container_name: dev1
     image: ubuntu
+    tty: true
     networks:
       backend_net:
         ipv4_address: 10.1.0.100
@@ -122,6 +202,7 @@ services:
   alpine:
     container_name: dev2
     image: alpine
+    tty: true
     networks:
       backend_net:
         ipv4_address: 10.1.0.101

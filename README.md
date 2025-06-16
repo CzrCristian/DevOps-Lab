@@ -1,4 +1,4 @@
-# DevOps-Lab V1.5
+# DevOps-Lab V1.6.1
 
 # TO DO - Readme.md and Security.md
 
@@ -38,30 +38,39 @@ To see logs of a services `docker-compose logs -f <service-name>`
 ## frontend_net - 10.1.0.0/24
 | Container-Name    | Container-IP  | Description                       |
 |-------------------|---------------|-----------------------------------|
-| nginx             | 10.1.0.10     | Nginx web server - reverse proxy  |
-| tomcat-1          | 10.1.0.21     | tomcat first server               |
-| tomcat-2          | 10.1.0.22     | tomcat second server              |
+| nginx             | 10.0.0.10     | Nginx web server - reverse proxy  |
+| tomcat-dev        | 10.0.0.20     | tomcat server for development env |
+| tomcat-1          | 10.0.0.21     | tomcat server for testing env     |
+| tomcat-2          | 10.0.0.22     | tomcat server for prod env        |
 | portainer         | 10.0.0.210    | portainer contaienr               |
+| grafana           | 10.0.0.200    | grafana contaienr                 |
+| prometeus         | 10.0.0.201    | prometeus contaienr               |
 
 ## backend_net - 10.2.0.0/24
 | Container-Name    | Container-IP  | Description                       |
 |-------------------|---------------|-----------------------------------|
-| dev1              | 10.1.0.100    | first container for dev - ubuntu  |
-| dev2              | 10.1.0.101    | second container for dev - alpine |
+| dev1              | 10.1.0.100  | dev container - ubuntu              |
+| dev2              | 10.1.0.101  | second container for dev - alpine   |
+| grafana           | 10.1.0.200  | grafana contaienr for monitoring    |
+| prometeus         | 10.1.0.201  | prometeus contaienr                 |
 
 ## db_net - 10.4.0.0/24
 | Container-Name    | Container-IP  | Description                       |
 |-------------------|---------------|-----------------------------------|
-| postgresql-main   | 10.2.0.10     | Main db                           |
-| postgresql-drc    | 10.2.0.100    | DRC db                            |
+| postgresql-prod   | 10.2.0.10     | PROD db                           |
+| postgresql-test   | 10.2.0.100    | TEST db                           |
+| postgresql-test   | 10.2.0.111    | dev db                            |
 
 ## cicd_net - 10.3.0.0/24
 | Container-Name    | Container-IP  | Description                       |
 |-------------------|---------------|-----------------------------------|
+| jenkins           | 10.3.0.10     | Jenkins container for CICD        |
 
 ## monitoring_net - 10.4.0.0/24
 | Container-Name    | Container-IP  | Description                       |
 |-------------------|---------------|-----------------------------------|
+| grafana           | 10.4.0.10     | grafana contianer for monitoring  |
+| prometeus         | 10.4.0.11     | prometeus contaienr               |
 
 ## mgmt_net - 10.5.0.0/24
 | Container-Name    | Container-IP  | Description                       |
