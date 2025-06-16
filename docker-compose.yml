@@ -1,4 +1,4 @@
-# DevOps-Lab V1.6.1
+# DevOps-Lab V1.6.2
 # Made by Wras - Cristian C.
 
 version: '3.9'
@@ -85,7 +85,7 @@ services:
       frontend_net:
         ipv4_address: 10.0.0.200
     ports: 
-      - 3000:3005
+      - 3005:3000
     #command: tail -f /dev/null
 
   prometheus:
@@ -117,9 +117,9 @@ services:
       frontend_net:
         ipv4_address: 10.0.0.10
     ports:
-      - 80:8080
-      - 443:8443
-    command: tail -f /dev/null
+      - 8080:80
+      - 8443:443
+    #command: tail -f /dev/null
   
     # Tomcat containers
       # Tomcat dev enviroment
