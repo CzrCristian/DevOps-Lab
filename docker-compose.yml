@@ -158,6 +158,12 @@ services:
     networks:
       backend_net:
         ipv4_address: 10.1.0.20
+    deploy:
+      resources:
+        limits:
+          memory: 100M
+          cpus: '0.5'
+
     command: tail -f /dev/null
 
       # Tomcat testing enviroment
@@ -170,6 +176,11 @@ services:
     networks:
       backend_net:
         ipv4_address: 10.1.0.21
+    deploy:
+      resources:
+        limits:
+          memory: 100M
+          cpus: '0.5'
     command: tail -f /dev/null
 
       # Tomcat production enviroment
@@ -182,6 +193,11 @@ services:
     networks:
       backend_net:
         ipv4_address: 10.1.0.22
+    deploy:
+      resources:
+        limits:
+          memory: 100M
+          cpus: '0.5'
     command: tail -f /dev/null
 
     # Databases (Private)
