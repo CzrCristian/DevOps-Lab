@@ -1,4 +1,4 @@
-# DevOps-Lab V1.6.2
+# DevOps-Lab V1.6.5
 # Made by Wras - Cristian C.
 
 version: '3.9'
@@ -38,11 +38,36 @@ networks:
         - subnet: 10.10.0.0/24
 
 services:
+  
   # OpenVPN Server
+  openvpn:
+    container_name: openvpn
+    image: ubuntu
+    tty: true
+    networks:
+      openvpn_net:
+        ipv4_address: 10.10.0.10
+    command: tail -f /dev/null
 
   # DNS Server (CoreDNS)
+  dnsserver:
+    container_name: dnsserver
+    image: ubuntu
+    tty: true
+    networks:
+      backend_net:
+        ipv4_address: 10.1.0.5
+    command: tail -f /dev/null
 
   # Email Server (MailDev for testing)
+  mailserver:
+    container_name: mailserver
+    image: ubuntu
+    tty: true
+    networks:
+      mail_net:
+        ipv4_address: 10.6.0.10
+    command: tail -f /dev/null
 
   # Management UI
     # Portainer
@@ -62,7 +87,6 @@ services:
   # Jump Server (SSH enabled Ubuntu)
 
   # CI/CD Tools
-    
     # Jenkins
   jenkins:
     container_name: jenkins
@@ -73,6 +97,7 @@ services:
         ipv4_address: 10.3.0.10
   
   # Monitoring
+    # Grafana
   grafana:
     container_name: grafana
     image: grafana/grafana
@@ -87,7 +112,8 @@ services:
     ports: 
       - 3005:3000
     #command: tail -f /dev/null
-
+    
+    # Prometeus
   prometheus:
     image: ubuntu
     tty: true
@@ -208,9 +234,25 @@ services:
         ipv4_address: 10.1.0.101
     command: tail -f /dev/null
 
-
-
-
-
-
-
+  jumpserver:
+    container_name: jumpserver
+    image: ubuntu
+    tty: true
+    networks:
+      backend_net:
+        ipv4_address: 10.1.0.2
+      frontend_net:
+        ipv4_address: 10.0.0.2
+      cicd_net:
+        ipv4_address: 10.3.0.2
+      db_net:
+        ipv4_address: 10.2.0.2
+      monitoring_net:
+        ipv4_address: 10.4.0.2
+      mgmt_net:
+        ipv4_address: 10.5.0.2
+      mail_net:
+        ipv4_address: 10.6.0.2
+      openvpn_net:
+        ipv4_address: 10.10.0.2
+    command: tail -f /dev/null
