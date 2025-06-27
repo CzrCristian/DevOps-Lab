@@ -1,0 +1,7 @@
+docker exec -it jumpserver /bin/bash
+>> apt update
+>> apt install nmap
+>> nmap -sS -T4 10.1.0.1/24 -p-
+>> apt install curl
+>> curl http://10.1.0.20
+curl: (7) Failed to connect to 10.1.0.20 port 80 after 0 ms: Couldn't connect to server

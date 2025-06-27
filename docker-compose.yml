@@ -80,8 +80,8 @@ services:
         ipv4_address: 10.5.0.210
       frontend_net:
         ipv4_address: 10.0.0.210
-    expose:
-      - "9443"
+    ports:
+      - 9443:9443
   #  volumes:
   #    - /var/run/docker.sock:/var/run/docker.sock
   # Jump Server (SSH enabled Ubuntu)
@@ -145,9 +145,34 @@ services:
     ports:
       - 8080:80
       - 8443:443
-    #command: tail -f /dev/null
+    command: tail -f /dev/null
   
     # Tomcat containers
+    # TOMCAT DOCKERFILES
+    
+  tomcat-dockerfile:
+    build:
+      context: ./Containers
+      dockerfile: Docker_files/Tomcat.Dockerfile
+    image: custom-tomcat:1.0
+    container_name: tomcat-1-df
+    tty: true
+    networks:
+      backend_net:
+        ipv4_address: 10.1.0.55
+    ports:
+      - 8081:8080
+    volumes:
+      - ./Tomcat/Tomcat-1-dev/Certs:/usr/local/tomcat/conf/certs
+      - ./Tomcat/Tomcat-1-dev/webapps:/usr/local/tomcat/webapps
+      - ./Tomcat/Tomcat-1-dev/Configurations:/usr/local/tomcat/conf
+      - ./Tomcat/Tomcat-1-dev/Scripts:/usr/local/bin/scripts
+      - ./Tomcat/Tomcat-1-dev/Volumes:/app/data
+    #expose:
+    #  - "8443"
+    #command: tail -f /dev/null
+    restart: unless-stopped
+
       # Tomcat dev enviroment
   tomcat-1-dev:
     container_name: tomcat-1-dev
